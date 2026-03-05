@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronRight, ShieldCheck, Users, Calendar, MapPin, CheckCircle2, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ShieldCheck, Calendar, MapPin, CheckCircle2, ArrowRight } from 'lucide-react';
 
 const App = () => {
   const [activePage, setActivePage] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
   
-  // Eventbrite URL - Replace with your actual Eventbrite event URL
-  const eventbriteURL = "https://www.eventbrite.com/e/your-event-id";
+  // Google Apps Script Web App URL - Replace with your actual deployment URL
+  const googleScriptURL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,21 +19,292 @@ const App = () => {
   }, []);
 
   const GoldText = ({ children, className = "" }) => (
-    <span className={`text-[#D4AF37] ${className}`}>{children}</span>
+    <span className={`text-gold ${className}`}>{children}</span>
   );
 
   const Button = ({ variant = 'primary', children, onClick, className = "" }) => {
     const baseStyles = "px-8 py-4 transition-all duration-500 font-medium tracking-widest text-sm uppercase relative overflow-hidden group";
     const variants = {
-      primary: "bg-gradient-to-r from-[#D4AF37] to-[#C9A961] text-black hover:from-[#E5C158] hover:to-[#D4AF37] hover:scale-105",
-      secondary: "border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black backdrop-blur-sm",
-      text: "text-[#D4AF37] hover:text-[#E5C158]"
+      primary: "bg-gradient-to-r from-gold to-gold-hover text-black hover:from-gold-hover hover:to-gold hover:scale-105",
+      secondary: "border-2 border-gold text-gold hover:bg-gold hover:text-black backdrop-blur-sm",
+      text: "text-gold hover:text-gold-hover"
     };
     return (
       <button onClick={onClick} className={`${baseStyles} ${variants[variant]} ${className}`}>
         <span className="relative z-10">{children}</span>
         {variant === 'primary' && <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>}
       </button>
+    );
+  };
+
+  const ApplicationForm = () => {
+    const [formData, setFormData] = useState({
+      name: '',
+      age: '',
+      gender: '',
+      education: '',
+      profession: '',
+      city: '',
+      contactNumber: '',
+      email: '',
+      maritalStatus: '',
+      eventInterest: ''
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
+
+    const handleChange = (e) => {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value
+      });
+    };
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+      setSubmitStatus({ type: '', message: '' });
+
+      try {
+        const response = await fetch(googleScriptURL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...formData,
+            timestamp: new Date().toISOString()
+          })
+        });
+
+        // Since mode is 'no-cors', we can't read the response
+        // We'll assume success if no error is thrown
+        setSubmitStatus({
+          type: 'success',
+          message: 'Application submitted successfully! Our team will contact you within 24-48 hours for verification.'
+        });
+        
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setFormData({
+            name: '',
+            age: '',
+            gender: '',
+            education: '',
+            profession: '',
+            city: '',
+            contactNumber: '',
+            email: '',
+            maritalStatus: '',
+            eventInterest: ''
+          });
+          setShowApplicationForm(false);
+        }, 3000);
+
+      } catch (error) {
+        setSubmitStatus({
+          type: 'error',
+          message: 'Failed to submit application. Please try again.'
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    if (!showApplicationForm) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="bg-gradient-to-br from-matte-black to-deep-black border border-gold/30 rounded-lg max-w-2xl w-full my-8 relative">
+          {/* Close Button */}
+          <button
+            onClick={() => setShowApplicationForm(false)}
+            className="absolute top-4 right-4 text-gold hover:text-gold-hover transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <div className="p-8">
+            <h2 className="text-3xl font-serif text-white mb-2">Apply For Invitation</h2>
+            <p className="text-soft-grey text-sm mb-6">Fill in your details for verification by our relationship panel</p>
+
+            {submitStatus.message && (
+              <div className={`mb-6 p-4 rounded border ${
+                submitStatus.type === 'success' 
+                  ? 'bg-green-900/20 border-green-500/50 text-green-400' 
+                  : 'bg-red-900/20 border-red-500/50 text-red-400'
+              }`}>
+                {submitStatus.message}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-soft-grey text-sm mb-2">Full Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-soft-grey text-sm mb-2">Age *</label>
+                  <input
+                    type="number"
+                    name="age"
+                    value={formData.age}
+                    onChange={handleChange}
+                    required
+                    min="21"
+                    max="60"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                    placeholder="Enter your age"
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-soft-grey text-sm mb-2">Gender *</label>
+                  <select
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-soft-grey text-sm mb-2">Marital Status *</label>
+                  <select
+                    name="maritalStatus"
+                    value={formData.maritalStatus}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Single">Single</option>
+                    <option value="Divorced">Divorced</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-soft-grey text-sm mb-2">Education *</label>
+                <input
+                  type="text"
+                  name="education"
+                  value={formData.education}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                  placeholder="e.g., MBBS, MBA, B.Tech"
+                />
+              </div>
+
+              <div>
+                <label className="block text-soft-grey text-sm mb-2">Profession *</label>
+                <input
+                  type="text"
+                  name="profession"
+                  value={formData.profession}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                  placeholder="e.g., Doctor, Entrepreneur, Software Engineer"
+                />
+              </div>
+
+              <div>
+                <label className="block text-soft-grey text-sm mb-2">City *</label>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                  placeholder="Enter your city"
+                />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-soft-grey text-sm mb-2">Contact Number *</label>
+                  <input
+                    type="tel"
+                    name="contactNumber"
+                    value={formData.contactNumber}
+                    onChange={handleChange}
+                    required
+                    pattern="[0-9]{10}"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                    placeholder="10-digit mobile number"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-soft-grey text-sm mb-2">Email *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                    placeholder="your@email.com"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-soft-grey text-sm mb-2">Event Interest *</label>
+                <select
+                  name="eventInterest"
+                  value={formData.eventInterest}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                >
+                  <option value="">Select Event</option>
+                  <option value="Elite Doctors Evening - Mumbai">Elite Doctors Evening - Mumbai</option>
+                  <option value="Founders & Visionaries - Bangalore">Founders & Visionaries - Bangalore</option>
+                  <option value="Any Upcoming Event">Any Upcoming Event</option>
+                </select>
+              </div>
+
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-gold to-gold-hover text-black py-4 rounded font-medium tracking-widest text-sm uppercase hover:from-gold-hover hover:to-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Submitting...' : 'Submit Application'}
+                </button>
+              </div>
+
+              <p className="text-xs text-soft-grey text-center mt-4">
+                By submitting, you agree to our verification process. Our team will contact you within 24-48 hours.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
     );
   };
 
@@ -46,7 +318,7 @@ const App = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.05),transparent_70%)] pointer-events-none"></div>
         
         <div 
-          className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif tracking-tighter cursor-pointer hover:scale-105 transition-all duration-500 relative z-10 group"
+          className="text-sm sm:text-base md:text-lg lg:text-xl font-serif tracking-tighter cursor-pointer hover:scale-105 transition-all duration-500 relative z-10 group"
           onClick={() => setActivePage('home')}
         >
           <GoldText className="drop-shadow-[0_0_20px_rgba(212,175,55,0.4)] group-hover:drop-shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-500">
@@ -99,7 +371,7 @@ const App = () => {
           
           <Button 
             variant="secondary" 
-            onClick={() => window.open(eventbriteURL, '_blank')}
+            onClick={() => setShowApplicationForm(true)}
             className="px-6 xl:px-8 py-2 xl:py-3 text-[10px] shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_40px_rgba(212,175,55,0.4)] border-[#D4AF37]/60 hover:border-[#D4AF37]"
           >
             Apply Now
@@ -130,7 +402,7 @@ const App = () => {
           </button>
           <Button 
             variant="secondary" 
-            onClick={() => { window.open(eventbriteURL, '_blank'); setMobileMenuOpen(false); }}
+            onClick={() => { setShowApplicationForm(true); setMobileMenuOpen(false); }}
             className="px-8 py-3 text-xs"
           >
             Apply Now
@@ -146,7 +418,7 @@ const App = () => {
   const Home = () => (
     <div className="animate-in fade-in duration-700">
       {/* Hero Section */}
-      <section className="relative min-h-screen w-full flex items-center justify-center bg-black overflow-hidden pt-20 md:pt-0">
+      <section className="relative min-h-screen w-full flex items-center justify-center bg-matte-black overflow-hidden pt-20 md:pt-0">
         {/* Spotlight Image Overlay - Even Larger Size, Centered */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[95%] h-[100%]">
           <img 
@@ -157,35 +429,34 @@ const App = () => {
         </div>
         
         {/* Dark overlay to control brightness */}
-        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-matte-black/20"></div>
         
         {/* Additional dramatic lighting effects */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[600px] bg-[#D4AF37]/8 blur-[80px]"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[600px] bg-gold/8 blur-[80px]"></div>
         
         {/* Luxury Grain Texture */}
         <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
         
         <div className="relative z-10 w-full flex flex-col items-center justify-center px-4 sm:px-6">
           <div className="mb-4 sm:mb-6 md:mb-8">
-            <p className="text-[#D4AF37] tracking-[0.4em] sm:tracking-[0.5em] text-[10px] sm:text-xs animate-pulse drop-shadow-[0_0_10px_rgba(212,175,55,0.5)] border border-[#D4AF37]/30 px-4 sm:px-6 py-2 rounded-full backdrop-blur-sm bg-[#D4AF37]/5 inline-block">
-              BY APPLICATION ONLY
+            <p className="text-gold tracking-[0.4em] sm:tracking-[0.5em] text-[10px] sm:text-xs animate-pulse drop-shadow-[0_0_10px_rgba(212,175,55,0.5)] border border-gold/30 px-4 sm:px-6 py-2 rounded-full backdrop-blur-sm bg-gold/5 inline-block">
+              BY INVITATION ONLY
             </p>
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-[10rem] font-serif text-white mb-4 sm:mb-6 md:mb-8 tracking-tight leading-none drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] [text-shadow:_0_0_80px_rgb(212_175_55_/_20%)] text-center">
-            THE 1% MATCHMAKING
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif text-white mb-4 sm:mb-6 md:mb-8 tracking-tight leading-none drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] [text-shadow:_0_0_80px_rgb(212_175_55_/_20%)] text-center">
+            Exclusive Matchmaking Events<br />Curated for India's Most Eligible 1%
           </h1>
-          <div className="h-[1px] w-20 sm:w-32 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-4 sm:mb-6 md:mb-8"></div>
-          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-300 font-light mb-3 sm:mb-4 md:mb-6 tracking-wide drop-shadow-lg">Exclusive Offline Matchmaking Events</p>
-          <p className="text-gray-400 mb-8 sm:mb-12 md:mb-16 tracking-[0.2em] sm:tracking-[0.3em] text-xs sm:text-sm uppercase font-light">For India's Most Accomplished Individuals</p>
-          <p className="text-[#D4AF37]/70 text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.4em] mb-6 sm:mb-8 md:mb-12 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]">LIMITED TO 50 VERIFIED GUESTS PER EVENT</p>
+          <div className="h-[1px] w-20 sm:w-32 mx-auto bg-gradient-to-r from-transparent via-gold to-transparent mb-4 sm:mb-6 md:mb-8"></div>
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-light mb-3 sm:mb-4 md:mb-6 tracking-wide drop-shadow-lg">25 Men. 25 Women. Verified. Approved. Invited.</p>
+          <p className="text-soft-grey mb-8 sm:mb-12 md:mb-16 tracking-[0.2em] sm:tracking-[0.3em] text-xs uppercase font-light text-center max-w-2xl">Entry strictly after screening & approval by our relationship panel</p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <Button 
               variant="primary" 
-              onClick={() => window.open(eventbriteURL, '_blank')}
-              className="shadow-2xl shadow-[#D4AF37]/30 hover:shadow-[#D4AF37]/50 hover:scale-105 w-full sm:w-auto text-xs sm:text-sm px-6 sm:px-8 py-3 sm:py-4"
+              onClick={() => setShowApplicationForm(true)}
+              className="shadow-2xl shadow-gold/30 hover:shadow-gold/50 hover:scale-105 w-full sm:w-auto text-xs sm:text-sm px-6 sm:px-8 py-3 sm:py-4"
             >
-              Apply For Upcoming Event
+              Apply For Invitation
             </Button>
             <Button 
               variant="text" 
@@ -215,7 +486,7 @@ const App = () => {
       </section>
 
       {/* How It Works */}
-      <section className="bg-gradient-to-b from-[#000000] via-[#0f0f0f] to-[#000000] py-16 sm:py-24 md:py-32 lg:py-40 relative overflow-hidden">
+      <section className="bg-gradient-to-b from-[#000000] via-[#0f0f0f] to-[#000000] py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05),transparent_70%)]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16 md:gap-20 xl:gap-24">
@@ -226,8 +497,8 @@ const App = () => {
             ].map((item, idx) => (
               <div key={idx} className="relative group">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg -m-4 sm:-m-6 p-4 sm:p-6"></div>
-                <span className="text-5xl sm:text-6xl md:text-7xl font-serif text-[#D4AF37]/15 absolute -top-6 sm:-top-8 md:-top-10 -left-1 sm:-left-2 group-hover:text-[#D4AF37]/25 transition-colors duration-500 drop-shadow-[0_0_20px_rgba(212,175,55,0.2)]">{item.step}</span>
-                <h3 className="text-xl sm:text-xl md:text-2xl text-white mb-4 sm:mb-6 relative z-10 font-serif tracking-wide group-hover:text-[#D4AF37] transition-colors duration-300">{item.title}</h3>
+                <span className="text-4xl sm:text-5xl md:text-6xl font-serif text-[#D4AF37]/15 absolute -top-6 sm:-top-8 md:-top-10 -left-1 sm:-left-2 group-hover:text-[#D4AF37]/25 transition-colors duration-500 drop-shadow-[0_0_20px_rgba(212,175,55,0.2)]">{item.step}</span>
+                <h3 className="text-lg sm:text-xl md:text-2xl text-white mb-4 sm:mb-6 relative z-10 font-serif tracking-wide group-hover:text-[#D4AF37] transition-colors duration-300">{item.title}</h3>
                 <div className="h-[1px] w-12 sm:w-16 bg-gradient-to-r from-[#D4AF37] to-transparent mb-4 sm:mb-6 group-hover:w-16 sm:group-hover:w-24 transition-all duration-500"></div>
                 <p className="text-gray-400 leading-relaxed font-light text-sm sm:text-base">{item.desc}</p>
               </div>
@@ -242,11 +513,11 @@ const App = () => {
       </section>
 
       {/* Upcoming Events */}
-      <section className="bg-black py-16 sm:py-24 md:py-32 lg:py-40 relative overflow-hidden">
+      <section className="bg-black py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#D4AF37]/5 blur-[120px] rounded-full"></div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-24">
-            <h2 className="text-5xl font-serif text-white mb-6 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)]">Upcoming Curated Evenings</h2>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-serif text-white mb-6 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)]">Upcoming Curated Evenings</h2>
             <div className="h-[1px] w-24 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent"></div>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 xl:gap-16 max-w-6xl mx-auto">
@@ -278,7 +549,7 @@ const App = () => {
                 <div className="relative z-10">
                   <div className="flex justify-between items-start mb-8">
                     <div>
-                      <h4 className="text-3xl font-serif text-white mb-2 group-hover:text-[#D4AF37] transition-colors duration-300 drop-shadow-lg">{event.title}</h4>
+                      <h4 className="text-2xl font-serif text-white mb-2 group-hover:text-[#D4AF37] transition-colors duration-300 drop-shadow-lg">{event.title}</h4>
                       <p className="text-[#D4AF37] tracking-[0.3em] text-xs uppercase drop-shadow-[0_0_10px_rgba(212,175,55,0.4)]">{event.location}</p>
                     </div>
                   </div>
@@ -333,7 +604,7 @@ const App = () => {
                       </p>
                       <Button 
                         variant="secondary" 
-                        onClick={() => window.open(eventbriteURL, '_blank')}
+                        onClick={() => setShowApplicationForm(true)}
                         className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105"
                       >
                         Apply
@@ -348,31 +619,31 @@ const App = () => {
       </section>
 
       {/* Experience Section */}
-      <section className="bg-gradient-to-b from-[#000000] via-[#050505] to-[#000000] py-16 sm:py-24 md:py-32 lg:py-48 text-center px-6 relative overflow-hidden">
+      <section className="bg-gradient-to-b from-[#000000] via-[#050505] to-[#000000] py-12 sm:py-16 md:py-20 lg:py-24 text-center px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.04),transparent_70%)]"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#D4AF37]/3 blur-[120px] rounded-full"></div>
         <div className="max-w-4xl mx-auto relative z-10">
           <div className="mb-12">
             <div className="h-[1px] w-32 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent mb-12"></div>
-            <h2 className="text-5xl md:text-6xl font-serif text-white mb-6 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-serif text-white mb-6 leading-tight">
               An Evening Designed For<br />Meaningful Conversations
             </h2>
             <div className="h-[1px] w-32 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent mt-12"></div>
           </div>
-          <div className="space-y-6 text-gray-300 font-light text-xl leading-relaxed tracking-wide mt-16">
+          <div className="space-y-6 text-gray-300 font-light text-lg leading-relaxed tracking-wide mt-16">
             <p className="hover:text-white transition-colors duration-300">Fine dining. Structured introductions.</p>
             <p className="hover:text-white transition-colors duration-300">Private one-on-one interaction sessions.</p>
-            <p className="text-[#D4AF37] text-2xl mt-8 tracking-[0.2em]">No randomness. No swiping. No noise.</p>
+            <p className="text-[#D4AF37] text-xl mt-8 tracking-[0.2em]">No randomness. No swiping. No noise.</p>
           </div>
         </div>
       </section>
 
       {/* Application Timeline */}
-      <section className="bg-gradient-to-b from-[#000000] via-[#0a0a0a] to-[#000000] py-16 sm:py-24 md:py-32 lg:py-40 border-t border-[#D4AF37]/20 relative overflow-hidden">
+      <section className="bg-gradient-to-b from-[#000000] via-[#0a0a0a] to-[#000000] py-12 sm:py-16 md:py-20 lg:py-24 border-t border-[#D4AF37]/20 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.03),transparent_70%)]"></div>
         <div className="max-w-4xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-24">
-            <h2 className="text-4xl font-serif text-white mb-6 tracking-widest">Our Selection Process</h2>
+          <div className="text-center mb-16">
+            <h2 className="text-2xl md:text-3xl font-serif text-white mb-6 tracking-widest">Our Selection Process</h2>
             <div className="h-[1px] w-24 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent"></div>
           </div>
           <div className="relative space-y-16">
@@ -409,18 +680,18 @@ const App = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="bg-gradient-to-b from-[#000000] via-[#0a0a0a] to-[#000000] py-16 sm:py-24 md:py-32 lg:py-48 text-center relative overflow-hidden">
+      <section className="bg-gradient-to-b from-[#000000] via-[#0a0a0a] to-[#000000] py-12 sm:py-16 md:py-20 lg:py-24 text-center relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-[#D4AF37]/5 blur-[150px] rounded-full"></div>
         <div className="max-w-5xl mx-auto px-6 relative z-10">
           <div className="h-[1px] w-40 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent mb-16"></div>
-          <h2 className="text-5xl md:text-7xl font-serif text-white mb-6 tracking-tight leading-tight">
+          <h2 className="text-3xl md:text-5xl font-serif text-white mb-6 tracking-tight leading-tight">
             Extraordinary Individuals Deserve <br />
             <GoldText className="drop-shadow-[0_0_20px_rgba(212,175,55,0.2)]">Extraordinary Introductions.</GoldText>
           </h2>
           <div className="h-[1px] w-40 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent mt-16 mb-16"></div>
           <Button 
             variant="primary" 
-            onClick={() => window.open(eventbriteURL, '_blank')}
+            onClick={() => setShowApplicationForm(true)}
             className="px-16 py-6 text-base shadow-2xl shadow-[#D4AF37]/30 hover:shadow-[#D4AF37]/50 hover:scale-110"
           >
             Apply For Upcoming Event
@@ -431,12 +702,12 @@ const App = () => {
   );
 
   const About = () => (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pt-32 pb-20 bg-black min-h-screen">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pt-24 pb-16 bg-black min-h-screen">
       <div className="max-w-6xl mx-auto px-6">
         {/* Hero Header */}
-        <div className="text-center mb-32 pt-12 relative">
+        <div className="text-center mb-20 pt-8 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#D4AF37]/5 blur-[120px] rounded-full"></div>
-          <h1 className="text-6xl md:text-7xl font-serif text-white mb-8 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] relative z-10">
+          <h1 className="text-4xl md:text-5xl font-serif text-white mb-8 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] relative z-10">
             Redefining Elite Introductions
           </h1>
           <div className="h-[1px] w-32 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-8"></div>
@@ -446,12 +717,12 @@ const App = () => {
         </div>
         
         {/* Philosophy Section */}
-        <div className="grid md:grid-cols-2 gap-20 xl:gap-28 mb-40">
+        <div className="grid md:grid-cols-2 gap-12 xl:gap-16 mb-24">
           <div className="relative group">
             <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg -m-6 p-6"></div>
             <div className="relative z-10">
               <h2 className="text-[#D4AF37] tracking-[0.3em] uppercase text-xs mb-6 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]">Philosophy</h2>
-              <h3 className="text-4xl font-serif text-white mb-8 leading-snug group-hover:text-[#D4AF37] transition-colors duration-300">Why The 1% Exists</h3>
+              <h3 className="text-3xl font-serif text-white mb-8 leading-snug group-hover:text-[#D4AF37] transition-colors duration-300">Why We Exist</h3>
               <div className="h-[1px] w-20 bg-gradient-to-r from-[#D4AF37] to-transparent mb-8 group-hover:w-32 transition-all duration-500"></div>
               <p className="text-gray-400 font-light leading-relaxed text-lg mb-6">
                 In a world of infinite swiping and digital masks, we believe in the power of physical presence. 
@@ -467,7 +738,7 @@ const App = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg -m-6 p-6"></div>
             <div className="relative z-10">
               <h2 className="text-[#D4AF37] tracking-[0.3em] uppercase text-xs mb-6 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]">The Medium</h2>
-              <h3 className="text-4xl font-serif text-white mb-8 leading-snug group-hover:text-[#D4AF37] transition-colors duration-300">Why Offline</h3>
+              <h3 className="text-3xl font-serif text-white mb-8 leading-snug group-hover:text-[#D4AF37] transition-colors duration-300">Why Offline</h3>
               <div className="h-[1px] w-20 bg-gradient-to-r from-[#D4AF37] to-transparent mb-8 group-hover:w-32 transition-all duration-500"></div>
               <p className="text-gray-400 font-light leading-relaxed text-lg mb-6">
                 Real chemistry happens in the nuances—a shared laugh over fine wine, a spark during a conversation. 
@@ -481,7 +752,7 @@ const App = () => {
         </div>
 
         {/* Who It's For Section */}
-        <div className="border-t border-[#D4AF37]/20 pt-32 mb-40 relative">
+        <div className="border-t border-[#D4AF37]/20 pt-20 mb-24 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#D4AF37]/3 blur-[120px] rounded-full"></div>
           <h2 className="text-center text-[#D4AF37] tracking-[0.3em] uppercase text-xs mb-16 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]">Who It Is For</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 xl:gap-10 text-center relative z-10">
@@ -543,16 +814,16 @@ const App = () => {
         </div>
 
         {/* Final CTA */}
-        <div className="text-center mt-32 relative">
+        <div className="text-center mt-20 relative">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#D4AF37]/5 blur-[100px] rounded-full"></div>
           <div className="relative z-10">
-            <h3 className="text-3xl md:text-4xl font-serif text-white mb-8">Ready to Join?</h3>
+            <h3 className="text-2xl md:text-3xl font-serif text-white mb-8">Ready to Join?</h3>
             <p className="text-gray-400 mb-10 max-w-2xl mx-auto">
               Applications are reviewed on a rolling basis. Secure your place at our next exclusive evening.
             </p>
             <Button 
               variant="primary" 
-              onClick={() => window.open(eventbriteURL, '_blank')}
+              onClick={() => setShowApplicationForm(true)}
               className="px-16 py-6 text-base shadow-2xl shadow-[#D4AF37]/40 hover:shadow-[#D4AF37]/60 hover:scale-110"
             >
               Apply Now
@@ -578,7 +849,7 @@ const App = () => {
             </div>
             <div className="flex flex-col gap-3 sm:gap-4">
               <button onClick={() => setActivePage('about')} className="hover:text-[#D4AF37] transition-colors text-left">About</button>
-              <button onClick={() => window.open(eventbriteURL, '_blank')} className="hover:text-[#D4AF37] transition-colors text-left">Apply</button>
+              <button onClick={() => setShowApplicationForm(true)} className="hover:text-[#D4AF37] transition-colors text-left">Apply</button>
             </div>
             <div className="flex flex-col gap-3 sm:gap-4 col-span-2 sm:col-span-1">
               <button className="hover:text-[#D4AF37] transition-colors text-left">Privacy Policy</button>
@@ -595,12 +866,12 @@ const App = () => {
   );
 
   const HowItWorks = () => (
-    <div className="animate-in fade-in duration-700 pt-32 pb-20 bg-black min-h-screen">
+    <div className="animate-in fade-in duration-700 pt-24 pb-16 bg-black min-h-screen">
       <div className="max-w-6xl mx-auto px-6">
         {/* Hero Header */}
-        <div className="text-center mb-32 pt-12 relative">
+        <div className="text-center mb-20 pt-8 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#D4AF37]/5 blur-[120px] rounded-full"></div>
-          <h1 className="text-6xl md:text-7xl font-serif text-white mb-8 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] relative z-10">
+          <h1 className="text-4xl md:text-5xl font-serif text-white mb-8 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] relative z-10">
             How It Works
           </h1>
           <div className="h-[1px] w-32 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-8"></div>
@@ -610,7 +881,7 @@ const App = () => {
         </div>
 
         {/* Step-by-Step Process */}
-        <div className="space-y-24 mb-32">
+        <div className="space-y-16 mb-20">
           {[
             {
               step: "01",
@@ -684,7 +955,7 @@ const App = () => {
 
                 {/* Content */}
                 <div className="flex-1">
-                  <h3 className="text-3xl md:text-4xl font-serif text-white mb-4 group-hover:text-[#D4AF37] transition-colors duration-300">
+                  <h3 className="text-2xl md:text-3xl font-serif text-white mb-4 group-hover:text-[#D4AF37] transition-colors duration-300">
                     {item.title}
                   </h3>
                   <div className="h-[1px] w-20 bg-gradient-to-r from-[#D4AF37] to-transparent mb-6 group-hover:w-32 transition-all duration-500"></div>
@@ -750,9 +1021,9 @@ const App = () => {
         </div>
 
         {/* FAQ Section */}
-        <div className="mb-32">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-serif text-white mb-6">Frequently Asked Questions</h2>
+        <div className="mb-20">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-serif text-white mb-6">Frequently Asked Questions</h2>
             <div className="h-[1px] w-24 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent"></div>
           </div>
           <div className="space-y-6 max-w-4xl mx-auto">
@@ -790,7 +1061,7 @@ const App = () => {
         <div className="text-center relative">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#D4AF37]/5 blur-[100px] rounded-full"></div>
           <div className="relative z-10">
-            <h3 className="text-3xl md:text-4xl font-serif text-white mb-8">Ready to Begin?</h3>
+            <h3 className="text-2xl md:text-3xl font-serif text-white mb-8">Ready to Begin?</h3>
             <p className="text-gray-400 mb-10 max-w-2xl mx-auto">
               Browse our upcoming events and reserve your seat at the next exclusive evening.
             </p>
@@ -804,7 +1075,7 @@ const App = () => {
               </Button>
               <Button 
                 variant="secondary" 
-                onClick={() => window.open(eventbriteURL, '_blank')}
+                onClick={() => setShowApplicationForm(true)}
                 className="px-16 py-6 text-base shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40"
               >
                 Apply Now
@@ -817,10 +1088,10 @@ const App = () => {
   );
 
   const Events = () => (
-    <div className="animate-in fade-in duration-700 pt-32 pb-20 bg-black min-h-screen">
+    <div className="animate-in fade-in duration-700 pt-24 pb-16 bg-black min-h-screen">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-24 pt-12">
-          <h1 className="text-6xl md:text-7xl font-serif text-white mb-6 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)]">Upcoming Curated Evenings</h1>
+        <div className="text-center mb-16 pt-8">
+          <h1 className="text-4xl md:text-5xl font-serif text-white mb-6 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)]">Upcoming Curated Evenings</h1>
           <div className="h-[1px] w-24 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-8"></div>
           <p className="text-gray-400 text-lg font-light tracking-wide max-w-2xl mx-auto">
             Intimate gatherings designed for meaningful connections among India's most accomplished individuals.
@@ -923,6 +1194,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-black text-white selection:bg-[#D4AF37] selection:text-black font-sans">
       <Navbar />
+      <ApplicationForm />
       {activePage === 'home' ? <Home /> : activePage === 'events' ? <Events /> : activePage === 'howItWorks' ? <HowItWorks /> : <About />}
       <Footer />
     </div>
