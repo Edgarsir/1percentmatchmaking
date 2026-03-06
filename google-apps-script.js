@@ -23,6 +23,8 @@ function doPost(e) {
     // Parse the incoming data
     const data = JSON.parse(e.postData.contents);
     
+    Logger.log('Received data: ' + JSON.stringify(data));
+    
     // Open the spreadsheet
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     let sheet = ss.getSheetByName(SHEET_NAME);
@@ -33,14 +35,14 @@ function doPost(e) {
       // Add headers
       sheet.appendRow([
         'Timestamp',
-        'Name',
+        'Full Name',
+        'Email',
         'Age',
         'Gender',
         'Education',
         'Profession',
         'City',
         'Contact Number',
-        'Email',
         'Marital Status',
         'Event Interest',
         'Status'
@@ -53,19 +55,19 @@ function doPost(e) {
       headerRange.setFontWeight('bold');
     }
     
-    // Append the data
+    // Append the data in the correct order
     sheet.appendRow([
       new Date(data.timestamp),
-      data.name,
-      data.age,
-      data.gender,
-      data.education,
-      data.profession,
-      data.city,
-      data.contactNumber,
-      data.email,
-      data.maritalStatus,
-      data.eventInterest,
+      data.name || '',
+      data.email || '',
+      data.age || '',
+      data.gender || '',
+      data.education || '',
+      data.profession || '',
+      data.city || '',
+      data.contactNumber || '',
+      data.maritalStatus || '',
+      data.eventInterest || '',
       'Pending Review'
     ]);
     
@@ -96,6 +98,7 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
       
   } catch (error) {
+    Logger.log('Error: ' + error.toString());
     return ContentService
       .createTextOutput(JSON.stringify({ 
         status: 'error', 
@@ -103,6 +106,16 @@ function doPost(e) {
       }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+// Handle GET requests (for testing)
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({ 
+      status: 'success', 
+      message: 'Form handler is active. Use POST to submit data.' 
+    }))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 // Test function to verify setup

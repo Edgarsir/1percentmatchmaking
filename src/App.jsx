@@ -7,8 +7,8 @@ const App = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   
-  // Google Apps Script Web App URL - Replace with your actual deployment URL
-  const googleScriptURL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+  // Google Apps Script Web App URL
+  const googleScriptURL = "https://script.google.com/macros/s/AKfycbweSB2D93Ml09iYNKmYNsTNN4IGDd_ZRZ3At51H0Q9uLoupjoSdmIUoJMzekA02jz--/exec";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -116,23 +116,23 @@ const App = () => {
 
     return (
       <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div className="bg-gradient-to-br from-matte-black to-deep-black border border-gold/30 rounded-lg max-w-2xl w-full my-8 relative">
+        <div className="bg-gradient-to-br from-matte-black to-deep-black border border-gold/30 rounded-lg max-w-lg w-full my-8 relative">
           {/* Close Button */}
           <button
             onClick={() => setShowApplicationForm(false)}
-            className="absolute top-4 right-4 text-gold hover:text-gold-hover transition-colors"
+            className="absolute top-3 right-3 text-gold hover:text-gold-hover transition-colors z-10"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
 
-          <div className="p-8">
-            <h2 className="text-3xl font-serif text-white mb-2">Apply For Invitation</h2>
-            <p className="text-soft-grey text-sm mb-6">Fill in your details for verification by our relationship panel</p>
+          <div className="p-6">
+            <h2 className="text-2xl font-serif text-white mb-1">Apply For Invitation</h2>
+            <p className="text-soft-grey text-xs mb-4">Fill in your details for verification</p>
 
             {submitStatus.message && (
-              <div className={`mb-6 p-4 rounded border ${
+              <div className={`mb-4 p-3 rounded border text-sm ${
                 submitStatus.type === 'success' 
                   ? 'bg-green-900/20 border-green-500/50 text-green-400' 
                   : 'bg-red-900/20 border-red-500/50 text-red-400'
@@ -141,23 +141,23 @@ const App = () => {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <div className="grid md:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-soft-grey text-sm mb-2">Full Name *</label>
+                  <label className="block text-soft-grey text-xs mb-1">Full Name *</label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
                     placeholder="Enter your full name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-soft-grey text-sm mb-2">Age *</label>
+                  <label className="block text-soft-grey text-xs mb-1">Age *</label>
                   <input
                     type="number"
                     name="age"
@@ -166,21 +166,21 @@ const App = () => {
                     required
                     min="21"
                     max="60"
-                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
                     placeholder="Enter your age"
                   />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-soft-grey text-sm mb-2">Gender *</label>
+                  <label className="block text-soft-grey text-xs mb-1">Gender *</label>
                   <select
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
                     required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
                   >
                     <option value="">Select Gender</option>
                     <option value="Male">Male</option>
@@ -189,13 +189,13 @@ const App = () => {
                 </div>
 
                 <div>
-                  <label className="block text-soft-grey text-sm mb-2">Marital Status *</label>
+                  <label className="block text-soft-grey text-xs mb-1">Marital Status *</label>
                   <select
                     name="maritalStatus"
                     value={formData.maritalStatus}
                     onChange={handleChange}
                     required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
                   >
                     <option value="">Select Status</option>
                     <option value="Single">Single</option>
@@ -205,47 +205,47 @@ const App = () => {
               </div>
 
               <div>
-                <label className="block text-soft-grey text-sm mb-2">Education *</label>
+                <label className="block text-soft-grey text-xs mb-1">Education *</label>
                 <input
                   type="text"
                   name="education"
                   value={formData.education}
                   onChange={handleChange}
                   required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                  className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
                   placeholder="e.g., MBBS, MBA, B.Tech"
                 />
               </div>
 
               <div>
-                <label className="block text-soft-grey text-sm mb-2">Profession *</label>
+                <label className="block text-soft-grey text-xs mb-1">Profession *</label>
                 <input
                   type="text"
                   name="profession"
                   value={formData.profession}
                   onChange={handleChange}
                   required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
-                  placeholder="e.g., Doctor, Entrepreneur, Software Engineer"
+                  className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
+                  placeholder="e.g., Doctor, Entrepreneur"
                 />
               </div>
 
               <div>
-                <label className="block text-soft-grey text-sm mb-2">City *</label>
+                <label className="block text-soft-grey text-xs mb-1">City *</label>
                 <input
                   type="text"
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
                   required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                  className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
                   placeholder="Enter your city"
                 />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-soft-grey text-sm mb-2">Contact Number *</label>
+                  <label className="block text-soft-grey text-xs mb-1">Contact Number *</label>
                   <input
                     type="tel"
                     name="contactNumber"
@@ -253,33 +253,33 @@ const App = () => {
                     onChange={handleChange}
                     required
                     pattern="[0-9]{10}"
-                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
-                    placeholder="10-digit mobile number"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
+                    placeholder="10-digit number"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-soft-grey text-sm mb-2">Email *</label>
+                  <label className="block text-soft-grey text-xs mb-1">Email *</label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
                     placeholder="your@email.com"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-soft-grey text-sm mb-2">Event Interest *</label>
+                <label className="block text-soft-grey text-xs mb-1">Event Interest *</label>
                 <select
                   name="eventInterest"
                   value={formData.eventInterest}
                   onChange={handleChange}
                   required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-4 py-3 text-white focus:border-gold focus:outline-none transition-colors"
+                  className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
                 >
                   <option value="">Select Event</option>
                   <option value="Elite Doctors Evening - Mumbai">Elite Doctors Evening - Mumbai</option>
@@ -288,18 +288,18 @@ const App = () => {
                 </select>
               </div>
 
-              <div className="pt-4">
+              <div className="pt-3">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-gold to-gold-hover text-black py-4 rounded font-medium tracking-widest text-sm uppercase hover:from-gold-hover hover:to-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gradient-to-r from-gold to-gold-hover text-black py-3 rounded font-medium tracking-widest text-xs uppercase hover:from-gold-hover hover:to-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit Application'}
                 </button>
               </div>
 
-              <p className="text-xs text-soft-grey text-center mt-4">
-                By submitting, you agree to our verification process. Our team will contact you within 24-48 hours.
+              <p className="text-[10px] text-soft-grey text-center mt-3">
+                Our team will contact you within 24-48 hours for verification.
               </p>
             </form>
           </div>
@@ -491,9 +491,9 @@ const App = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16 md:gap-20 xl:gap-24">
             {[
-              { step: "01", title: "Apply & Reserve Seat", desc: "Secure your place for the upcoming curated event." },
-              { step: "02", title: "Private Verification Call", desc: "Our relationship manager personally verifies credentials." },
-              { step: "03", title: "Attend The Exclusive Evening", desc: "Structured introductions in an elegant private setting." }
+              { step: "01", title: "Submit Application", desc: "Fill out the form with your details. No payment required." },
+              { step: "02", title: "Verification & Approval", desc: "Our team verifies credentials and approves qualified applicants." },
+              { step: "03", title: "Payment & Attend Event", desc: "After approval, complete payment and attend the exclusive evening." }
             ].map((item, idx) => (
               <div key={idx} className="relative group">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg -m-4 sm:-m-6 p-4 sm:p-6"></div>
@@ -647,7 +647,7 @@ const App = () => {
             <div className="h-[1px] w-24 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent"></div>
           </div>
           <div className="relative space-y-16">
-            {["Apply & Payment", "Verification Call", "Credential Approval", "Digital Event Pass Issued"].map((step, idx) => (
+            {["Submit Application", "Verification Call", "Credential Approval", "Payment & Event Pass"].map((step, idx) => (
               <div key={idx} className="flex flex-col items-center text-center group">
                 <div className="relative">
                   {/* Removed pulsing ring animations */}
@@ -672,7 +672,7 @@ const App = () => {
           <div className="mt-20 text-center">
             <div className="inline-block border border-[#D4AF37]/20 px-10 py-4 rounded-full backdrop-blur-sm bg-gradient-to-r from-[#D4AF37]/3 to-transparent hover:border-[#D4AF37]/40 transition-all duration-500">
               <p className="text-gray-400 text-xs italic tracking-wide">
-                In case of non-approval, full refund is processed within 48 hours.
+                Payment is only required after approval. No upfront fees.
               </p>
             </div>
           </div>
