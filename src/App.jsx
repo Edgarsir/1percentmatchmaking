@@ -309,7 +309,7 @@ const App = () => {
   };
 
   const Navbar = () => (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-700 ${isScrolled ? 'bg-gradient-to-b from-black/98 to-black/95 backdrop-blur-2xl border-b border-[#D4AF37]/40 shadow-[0_8px_32px_rgba(212,175,55,0.15)]' : 'bg-gradient-to-b from-black/40 to-transparent backdrop-blur-sm'}`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-700 ${isScrolled ? 'bg-gradient-to-b from-black/98 to-black/95 backdrop-blur-2xl border-b border-[#D4AF37]/40 shadow-[0_8px_32px_rgba(212,175,55,0.15)]' : 'bg-gradient-to-b from-black/95 via-black/90 to-black/80 backdrop-blur-xl lg:from-black/40 lg:to-transparent lg:backdrop-blur-sm'}`}>
       {/* Luxury top accent line */}
       <div className={`h-[1px] w-full bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent transition-opacity duration-700 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}></div>
       
@@ -380,7 +380,7 @@ const App = () => {
       </div>
       
       {/* Mobile Menu */}
-      <div className={`lg:hidden absolute top-full left-0 w-full bg-black/98 backdrop-blur-xl border-b border-[#D4AF37]/20 transition-all duration-500 ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+      <div className={`lg:hidden absolute top-full left-0 w-full bg-gradient-to-b from-black via-black to-black/95 backdrop-blur-2xl border-b border-[#D4AF37]/30 shadow-2xl transition-all duration-500 ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
         <nav className="flex flex-col items-center py-6 space-y-6 text-xs tracking-[0.3em] text-gray-300 uppercase">
           <button 
             onClick={() => { setActivePage('events'); setMobileMenuOpen(false); }} 
@@ -416,7 +416,7 @@ const App = () => {
   );
 
   const Home = () => (
-    <div className="animate-in fade-in duration-700">
+    <div className="animate-in fade-in duration-700 overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative min-h-screen w-full flex items-center justify-center bg-matte-black overflow-hidden pt-20 md:pt-0">
         {/* Spotlight Image Overlay - Even Larger Size, Centered */}
@@ -702,8 +702,8 @@ const App = () => {
   );
 
   const About = () => (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pt-24 pb-16 bg-black min-h-screen">
-      <div className="max-w-6xl mx-auto px-6">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pt-24 pb-16 bg-black min-h-screen overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Hero Header */}
         <div className="text-center mb-20 pt-8 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#D4AF37]/5 blur-[120px] rounded-full"></div>
@@ -866,8 +866,8 @@ const App = () => {
   );
 
   const HowItWorks = () => (
-    <div className="animate-in fade-in duration-700 pt-24 pb-16 bg-black min-h-screen">
-      <div className="max-w-6xl mx-auto px-6">
+    <div className="animate-in fade-in duration-700 pt-24 pb-16 bg-black min-h-screen overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Hero Header */}
         <div className="text-center mb-20 pt-8 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#D4AF37]/5 blur-[120px] rounded-full"></div>
@@ -895,13 +895,13 @@ const App = () => {
             },
             {
               step: "02",
-              title: "Apply via Eventbrite",
-              desc: "Click 'Apply' on your preferred event to be redirected to our Eventbrite registration page.",
+              title: "Submit Application",
+              desc: "Fill out the simple application form with your details.",
               details: [
-                "Fill in your basic details (name, email, phone number)",
-                "Provide professional information (qualification, workplace, designation)",
-                "Complete payment to reserve your seat",
-                "Receive instant booking confirmation"
+                "Provide basic information (name, email, phone number)",
+                "Share professional details (education, profession, city)",
+                "Select your event of interest",
+                "Receive instant confirmation email"
               ]
             },
             {
@@ -917,14 +917,13 @@ const App = () => {
             },
             {
               step: "04",
-              title: "Approval & Confirmation",
-              desc: "Once verified, you'll receive final approval and event details.",
+              title: "Approval & Payment",
+              desc: "Once approved, you'll receive a payment link to confirm your seat.",
               details: [
                 "Approval notification via email within 48 hours",
-                "Digital event pass with QR code",
-                "Detailed venue information and dress code",
-                "Event schedule and what to expect",
-                "In case of non-approval, full refund processed within 48 hours"
+                "Secure payment link sent after approval",
+                "Complete payment to reserve your seat",
+                "In case of non-approval, no payment required"
               ]
             },
             {
@@ -932,12 +931,12 @@ const App = () => {
               title: "Attend The Evening",
               desc: "Arrive at the exclusive venue and experience meaningful connections.",
               details: [
-                "Check-in with your digital event pass",
+                "Receive digital event pass with QR code",
+                "Check-in at the venue",
                 "Welcome drink and networking session",
                 "Structured introductions facilitated by our team",
                 "Fine dining experience with curated seating",
-                "Private one-on-one interaction opportunities",
-                "Post-event follow-up and connection facilitation"
+                "Private one-on-one interaction opportunities"
               ]
             }
           ].map((item, idx) => (
@@ -1088,8 +1087,8 @@ const App = () => {
   );
 
   const Events = () => (
-    <div className="animate-in fade-in duration-700 pt-24 pb-16 bg-black min-h-screen">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="animate-in fade-in duration-700 pt-24 pb-16 bg-black min-h-screen overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16 pt-8">
           <h1 className="text-4xl md:text-5xl font-serif text-white mb-6 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)]">Upcoming Curated Evenings</h1>
           <div className="h-[1px] w-24 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-8"></div>
@@ -1192,7 +1191,7 @@ const App = () => {
   );
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-[#D4AF37] selection:text-black font-sans">
+    <div className="min-h-screen bg-black text-white selection:bg-[#D4AF37] selection:text-black font-sans overflow-x-hidden">
       <Navbar />
       <ApplicationForm />
       {activePage === 'home' ? <Home /> : activePage === 'events' ? <Events /> : activePage === 'howItWorks' ? <HowItWorks /> : <About />}
