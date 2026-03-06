@@ -728,7 +728,7 @@ const App = () => {
                 In a world of infinite swiping and digital masks, we believe in the power of physical presence. 
                 The 1% was created to filter out the noise and bring together high-achievers in settings that reflect their standards.
               </p>
-              <p className="text-gray-500 font-light leading-relaxed">
+              <p className="text-gray-400 font-light leading-relaxed">
                 No algorithms. No profiles. Just genuine human connection in an environment designed for meaningful conversations.
               </p>
             </div>
@@ -740,11 +740,11 @@ const App = () => {
               <h2 className="text-[#D4AF37] tracking-[0.3em] uppercase text-xs mb-6 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]">The Medium</h2>
               <h3 className="text-3xl font-serif text-white mb-8 leading-snug group-hover:text-[#D4AF37] transition-colors duration-300">Why Offline</h3>
               <div className="h-[1px] w-20 bg-gradient-to-r from-[#D4AF37] to-transparent mb-8 group-hover:w-32 transition-all duration-500"></div>
-              <p className="text-gray-400 font-light leading-relaxed text-lg mb-6">
+              <p className="text-gray-300 font-light leading-relaxed text-lg mb-6">
                 Real chemistry happens in the nuances—a shared laugh over fine wine, a spark during a conversation. 
                 No algorithm can replace the intuition of a face-to-face encounter.
               </p>
-              <p className="text-gray-500 font-light leading-relaxed">
+              <p className="text-gray-400 font-light leading-relaxed">
                 Our curated evenings provide the perfect setting for authentic connections to flourish naturally.
               </p>
             </div>
@@ -755,19 +755,19 @@ const App = () => {
         <div className="border-t border-[#D4AF37]/20 pt-20 mb-24 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#D4AF37]/3 blur-[120px] rounded-full"></div>
           <h2 className="text-center text-[#D4AF37] tracking-[0.3em] uppercase text-xs mb-16 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]">Who It Is For</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 xl:gap-10 text-center relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 xl:gap-10 text-center relative z-10">
             {[
               { title: 'Doctors', desc: 'MBBS, Specialists, Surgeons' },
               { title: 'Founders', desc: 'Tech, Series A+, Entrepreneurs' },
               { title: 'Professionals', desc: 'CXOs, Senior Leadership' },
               { title: 'Accomplished', desc: 'High Achievers, Experts' }
             ].map((item, idx) => (
-              <div key={idx} className="p-10 border border-[#D4AF37]/20 bg-gradient-to-br from-[#0a0a0a] to-[#000000] hover:border-[#D4AF37] transition-all duration-500 group relative overflow-hidden">
+              <div key={idx} className="p-6 md:p-10 border border-[#D4AF37]/30 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] hover:border-[#D4AF37] transition-all duration-500 group relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/0 to-[#D4AF37]/0 group-hover:from-[#D4AF37]/10 group-hover:to-transparent transition-all duration-500"></div>
                 <div className="relative z-10">
-                  <p className="text-white font-serif text-2xl mb-3 group-hover:text-[#D4AF37] transition-colors duration-300">{item.title}</p>
-                  <div className="h-[1px] w-12 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent mb-4 group-hover:w-20 transition-all duration-500"></div>
-                  <p className="text-gray-500 text-xs tracking-wide">{item.desc}</p>
+                  <p className="text-white font-serif text-lg md:text-xl lg:text-2xl mb-3 group-hover:text-[#D4AF37] transition-colors duration-300 break-words">{item.title}</p>
+                  <div className="h-[1px] w-12 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent mb-4 group-hover:w-20 transition-all duration-500"></div>
+                  <p className="text-gray-400 text-xs tracking-wide break-words">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -775,7 +775,7 @@ const App = () => {
         </div>
 
         {/* The Standard Section */}
-        <div className="bg-gradient-to-br from-[#0f0f0f] to-[#000000] p-16 md:p-20 border border-[#D4AF37]/20 relative overflow-hidden shadow-2xl">
+        <div className="bg-gradient-to-br from-[#0f0f0f] to-[#000000] p-12 md:p-16 lg:p-20 border border-[#D4AF37]/20 relative overflow-hidden shadow-2xl mt-12">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#D4AF37]/5 blur-[100px] rounded-full"></div>
           <div className="relative z-10">
             <div className="text-center mb-16">
