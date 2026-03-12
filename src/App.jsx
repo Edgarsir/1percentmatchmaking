@@ -38,6 +38,7 @@ const App = () => {
   };
 
   const ApplicationForm = () => {
+    const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
       name: '',
       age: '',
@@ -58,6 +59,27 @@ const App = () => {
         ...formData,
         [e.target.name]: e.target.value
       });
+    };
+
+    const validateStep = (step) => {
+      if (step === 1) {
+        return formData.name && formData.age && formData.gender && formData.maritalStatus;
+      } else if (step === 2) {
+        return formData.education && formData.profession && formData.city;
+      } else if (step === 3) {
+        return formData.contactNumber && formData.email && formData.eventInterest;
+      }
+      return false;
+    };
+
+    const handleNext = () => {
+      if (validateStep(currentStep)) {
+        setCurrentStep(currentStep + 1);
+      }
+    };
+
+    const handlePrev = () => {
+      setCurrentStep(currentStep - 1);
     };
 
     const handleSubmit = async (e) => {
@@ -99,6 +121,7 @@ const App = () => {
             maritalStatus: '',
             eventInterest: ''
           });
+          setCurrentStep(1);
           setShowApplicationForm(false);
         }, 3000);
 
@@ -119,7 +142,10 @@ const App = () => {
         <div className="bg-gradient-to-br from-matte-black to-deep-black border border-gold/30 rounded-lg max-w-sm w-full my-4 relative">
           {/* Close Button */}
           <button
-            onClick={() => setShowApplicationForm(false)}
+            onClick={() => {
+              setShowApplicationForm(false);
+              setCurrentStep(1);
+            }}
             className="absolute top-2 right-2 text-gold hover:text-gold-hover transition-colors z-10"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +155,7 @@ const App = () => {
 
           <div className="p-4 sm:p-6">
             <h2 className="text-xl sm:text-2xl font-serif text-white mb-1">Apply For Invitation</h2>
-            <p className="text-soft-grey text-xs mb-3">Fill in your details for verification</p>
+            <p className="text-soft-grey text-xs mb-3">Step {currentStep} of 3</p>
 
             {submitStatus.message && (
               <div className={`mb-3 p-2 rounded border text-xs ${
@@ -142,160 +168,195 @@ const App = () => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-2">
-              <div className="grid md:grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-soft-grey text-[10px] mb-1">Full Name *</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
-                    placeholder="Name"
-                  />
-                </div>
+              {/* Step 1: Basic Info */}
+              {currentStep === 1 && (
+                <>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-soft-grey text-[10px] mb-1">Full Name *</label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                        placeholder="Name"
+                      />
+                    </div>
 
-                <div>
-                  <label className="block text-soft-grey text-[10px] mb-1">Age *</label>
-                  <input
-                    type="number"
-                    name="age"
-                    value={formData.age}
-                    onChange={handleChange}
-                    required
-                    min="21"
-                    max="60"
-                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
-                    placeholder="Age"
-                  />
-                </div>
-              </div>
+                    <div>
+                      <label className="block text-soft-grey text-[10px] mb-1">Age *</label>
+                      <input
+                        type="number"
+                        name="age"
+                        value={formData.age}
+                        onChange={handleChange}
+                        required
+                        min="21"
+                        max="60"
+                        className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                        placeholder="Age"
+                      />
+                    </div>
+                  </div>
 
-              <div className="grid md:grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-soft-grey text-[10px] mb-1">Gender *</label>
-                  <select
-                    name="gender"
-                    value={formData.gender}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-soft-grey text-[10px] mb-1">Gender *</label>
+                      <select
+                        name="gender"
+                        value={formData.gender}
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                      >
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-soft-grey text-[10px] mb-1">Marital Status *</label>
+                      <select
+                        name="maritalStatus"
+                        value={formData.maritalStatus}
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                      >
+                        <option value="">Select</option>
+                        <option value="Single">Single</option>
+                        <option value="Divorced">Divorced</option>
+                      </select>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Step 2: Professional Info */}
+              {currentStep === 2 && (
+                <>
+                  <div>
+                    <label className="block text-soft-grey text-[10px] mb-1">Education *</label>
+                    <input
+                      type="text"
+                      name="education"
+                      value={formData.education}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                      placeholder="e.g., MBA"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-soft-grey text-[10px] mb-1">Profession *</label>
+                    <input
+                      type="text"
+                      name="profession"
+                      value={formData.profession}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                      placeholder="e.g., Doctor"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-soft-grey text-[10px] mb-1">City *</label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                      placeholder="City"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Step 3: Contact & Event */}
+              {currentStep === 3 && (
+                <>
+                  <div>
+                    <label className="block text-soft-grey text-[10px] mb-1">Contact *</label>
+                    <input
+                      type="tel"
+                      name="contactNumber"
+                      value={formData.contactNumber}
+                      onChange={handleChange}
+                      required
+                      pattern="[0-9]{10}"
+                      className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                      placeholder="10-digit"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-soft-grey text-[10px] mb-1">Email *</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                      placeholder="Email"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-soft-grey text-[10px] mb-1">Event Interest *</label>
+                    <select
+                      name="eventInterest"
+                      value={formData.eventInterest}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                    >
+                      <option value="">Select Event</option>
+                      <option value="Elite Doctors Evening - Mumbai">Elite Doctors Evening - Mumbai</option>
+                      <option value="Founders & Visionaries - Bangalore">Founders & Visionaries - Bangalore</option>
+                      <option value="Any Upcoming Event">Any Upcoming Event</option>
+                    </select>
+                  </div>
+                </>
+              )}
+
+              {/* Navigation Buttons */}
+              <div className="pt-3 flex gap-2">
+                {currentStep > 1 && (
+                  <button
+                    type="button"
+                    onClick={handlePrev}
+                    className="flex-1 bg-deep-black border border-gold/30 text-gold py-2 rounded font-medium tracking-widest text-xs uppercase hover:border-gold hover:bg-gold/5 transition-all duration-300"
                   >
-                    <option value="">Select</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-soft-grey text-[10px] mb-1">Marital Status *</label>
-                  <select
-                    name="maritalStatus"
-                    value={formData.maritalStatus}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                    Back
+                  </button>
+                )}
+                
+                {currentStep < 3 ? (
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    disabled={!validateStep(currentStep)}
+                    className="flex-1 bg-gradient-to-r from-gold to-gold-hover text-black py-2 rounded font-medium tracking-widest text-xs uppercase hover:from-gold-hover hover:to-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <option value="">Select</option>
-                    <option value="Single">Single</option>
-                    <option value="Divorced">Divorced</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-soft-grey text-[10px] mb-1">Education *</label>
-                <input
-                  type="text"
-                  name="education"
-                  value={formData.education}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
-                  placeholder="e.g., MBA"
-                />
-              </div>
-
-              <div>
-                <label className="block text-soft-grey text-[10px] mb-1">Profession *</label>
-                <input
-                  type="text"
-                  name="profession"
-                  value={formData.profession}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
-                  placeholder="e.g., Doctor"
-                />
-              </div>
-
-              <div>
-                <label className="block text-soft-grey text-[10px] mb-1">City *</label>
-                <input
-                  type="text"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
-                  placeholder="City"
-                />
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-soft-grey text-[10px] mb-1">Contact *</label>
-                  <input
-                    type="tel"
-                    name="contactNumber"
-                    value={formData.contactNumber}
-                    onChange={handleChange}
-                    required
-                    pattern="[0-9]{10}"
-                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
-                    placeholder="10-digit"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-soft-grey text-[10px] mb-1">Email *</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
-                    placeholder="Email"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-soft-grey text-[10px] mb-1">Event Interest *</label>
-                <select
-                  name="eventInterest"
-                  value={formData.eventInterest}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
-                >
-                  <option value="">Select Event</option>
-                  <option value="Elite Doctors Evening - Mumbai">Elite Doctors Evening - Mumbai</option>
-                  <option value="Founders & Visionaries - Bangalore">Founders & Visionaries - Bangalore</option>
-                  <option value="Any Upcoming Event">Any Upcoming Event</option>
-                </select>
-              </div>
-
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-gold to-gold-hover text-black py-2 rounded font-medium tracking-widest text-xs uppercase hover:from-gold-hover hover:to-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? 'Submitting...' : 'Submit'}
-                </button>
+                    Next
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || !validateStep(currentStep)}
+                    className="flex-1 bg-gradient-to-r from-gold to-gold-hover text-black py-2 rounded font-medium tracking-widest text-xs uppercase hover:from-gold-hover hover:to-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                  </button>
+                )}
               </div>
 
               <p className="text-[9px] text-soft-grey text-center mt-2">
@@ -453,7 +514,7 @@ const App = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <Button 
               variant="primary" 
-              onClick={() => setShowApplicationForm(true)}
+              onClick={() => setActivePage('events')}
               className="shadow-2xl shadow-gold/30 hover:shadow-gold/50 hover:scale-105 w-full sm:w-auto text-xs sm:text-sm px-6 sm:px-8 py-3 sm:py-4"
             >
               Apply For Upcoming Event
