@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ShieldCheck, Calendar, MapPin, CheckCircle2, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Calendar, MapPin, CheckCircle2 } from 'lucide-react';
 
 const App = () => {
   const [activePage, setActivePage] = useState('home');
@@ -66,7 +66,7 @@ const App = () => {
       setSubmitStatus({ type: '', message: '' });
 
       try {
-        const response = await fetch(googleScriptURL, {
+        await fetch(googleScriptURL, {
           method: 'POST',
           mode: 'no-cors',
           headers: {
@@ -115,24 +115,24 @@ const App = () => {
     if (!showApplicationForm) return null;
 
     return (
-      <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div className="bg-gradient-to-br from-matte-black to-deep-black border border-gold/30 rounded-lg max-w-lg w-full my-8 relative">
+      <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+        <div className="bg-gradient-to-br from-matte-black to-deep-black border border-gold/30 rounded-lg max-w-sm w-full my-4 relative">
           {/* Close Button */}
           <button
             onClick={() => setShowApplicationForm(false)}
-            className="absolute top-3 right-3 text-gold hover:text-gold-hover transition-colors z-10"
+            className="absolute top-2 right-2 text-gold hover:text-gold-hover transition-colors z-10"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
 
-          <div className="p-6">
-            <h2 className="text-2xl font-serif text-white mb-1">Apply For Invitation</h2>
-            <p className="text-soft-grey text-xs mb-4">Fill in your details for verification</p>
+          <div className="p-4 sm:p-6">
+            <h2 className="text-xl sm:text-2xl font-serif text-white mb-1">Apply For Invitation</h2>
+            <p className="text-soft-grey text-xs mb-3">Fill in your details for verification</p>
 
             {submitStatus.message && (
-              <div className={`mb-4 p-3 rounded border text-sm ${
+              <div className={`mb-3 p-2 rounded border text-xs ${
                 submitStatus.type === 'success' 
                   ? 'bg-green-900/20 border-green-500/50 text-green-400' 
                   : 'bg-red-900/20 border-red-500/50 text-red-400'
@@ -141,23 +141,23 @@ const App = () => {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <div className="grid md:grid-cols-2 gap-3">
+            <form onSubmit={handleSubmit} className="space-y-2">
+              <div className="grid md:grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-soft-grey text-xs mb-1">Full Name *</label>
+                  <label className="block text-soft-grey text-[10px] mb-1">Full Name *</label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
-                    placeholder="Enter your full name"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                    placeholder="Name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-soft-grey text-xs mb-1">Age *</label>
+                  <label className="block text-soft-grey text-[10px] mb-1">Age *</label>
                   <input
                     type="number"
                     name="age"
@@ -166,38 +166,38 @@ const App = () => {
                     required
                     min="21"
                     max="60"
-                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
-                    placeholder="Enter your age"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                    placeholder="Age"
                   />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-3">
+              <div className="grid md:grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-soft-grey text-xs mb-1">Gender *</label>
+                  <label className="block text-soft-grey text-[10px] mb-1">Gender *</label>
                   <select
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
                     required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
                   >
-                    <option value="">Select Gender</option>
+                    <option value="">Select</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-soft-grey text-xs mb-1">Marital Status *</label>
+                  <label className="block text-soft-grey text-[10px] mb-1">Marital Status *</label>
                   <select
                     name="maritalStatus"
                     value={formData.maritalStatus}
                     onChange={handleChange}
                     required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
                   >
-                    <option value="">Select Status</option>
+                    <option value="">Select</option>
                     <option value="Single">Single</option>
                     <option value="Divorced">Divorced</option>
                   </select>
@@ -205,47 +205,47 @@ const App = () => {
               </div>
 
               <div>
-                <label className="block text-soft-grey text-xs mb-1">Education *</label>
+                <label className="block text-soft-grey text-[10px] mb-1">Education *</label>
                 <input
                   type="text"
                   name="education"
                   value={formData.education}
                   onChange={handleChange}
                   required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
-                  placeholder="e.g., MBBS, MBA, B.Tech"
+                  className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                  placeholder="e.g., MBA"
                 />
               </div>
 
               <div>
-                <label className="block text-soft-grey text-xs mb-1">Profession *</label>
+                <label className="block text-soft-grey text-[10px] mb-1">Profession *</label>
                 <input
                   type="text"
                   name="profession"
                   value={formData.profession}
                   onChange={handleChange}
                   required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
-                  placeholder="e.g., Doctor, Entrepreneur"
+                  className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                  placeholder="e.g., Doctor"
                 />
               </div>
 
               <div>
-                <label className="block text-soft-grey text-xs mb-1">City *</label>
+                <label className="block text-soft-grey text-[10px] mb-1">City *</label>
                 <input
                   type="text"
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
                   required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
-                  placeholder="Enter your city"
+                  className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                  placeholder="City"
                 />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-3">
+              <div className="grid md:grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-soft-grey text-xs mb-1">Contact Number *</label>
+                  <label className="block text-soft-grey text-[10px] mb-1">Contact *</label>
                   <input
                     type="tel"
                     name="contactNumber"
@@ -253,33 +253,33 @@ const App = () => {
                     onChange={handleChange}
                     required
                     pattern="[0-9]{10}"
-                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
-                    placeholder="10-digit number"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                    placeholder="10-digit"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-soft-grey text-xs mb-1">Email *</label>
+                  <label className="block text-soft-grey text-[10px] mb-1">Email *</label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
-                    placeholder="your@email.com"
+                    className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
+                    placeholder="Email"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-soft-grey text-xs mb-1">Event Interest *</label>
+                <label className="block text-soft-grey text-[10px] mb-1">Event Interest *</label>
                 <select
                   name="eventInterest"
                   value={formData.eventInterest}
                   onChange={handleChange}
                   required
-                  className="w-full bg-deep-black border border-gold/20 rounded px-3 py-2 text-sm text-white focus:border-gold focus:outline-none transition-colors"
+                  className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
                 >
                   <option value="">Select Event</option>
                   <option value="Elite Doctors Evening - Mumbai">Elite Doctors Evening - Mumbai</option>
@@ -288,18 +288,18 @@ const App = () => {
                 </select>
               </div>
 
-              <div className="pt-3">
+              <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-gold to-gold-hover text-black py-3 rounded font-medium tracking-widest text-xs uppercase hover:from-gold-hover hover:to-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gradient-to-r from-gold to-gold-hover text-black py-2 rounded font-medium tracking-widest text-xs uppercase hover:from-gold-hover hover:to-gold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Submitting...' : 'Submit Application'}
+                  {isSubmitting ? 'Submitting...' : 'Submit'}
                 </button>
               </div>
 
-              <p className="text-[10px] text-soft-grey text-center mt-3">
-                Our team will contact you within 24-48 hours for verification.
+              <p className="text-[9px] text-soft-grey text-center mt-2">
+                Our team will contact you within 24-48 hours.
               </p>
             </form>
           </div>
@@ -444,10 +444,10 @@ const App = () => {
             </p>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif text-white mb-4 sm:mb-6 md:mb-8 tracking-tight leading-none drop-shadow-[0_0_30px_rgba(212,175,55,0.2)] [text-shadow:_0_0_80px_rgb(212_175_55_/_20%)] text-center">
-            Exclusive Matchmaking Events<br />Curated for India's Most Eligible 1%
+            Exclusive Matchmaking Events<br />for India's Top 1%
           </h1>
           <div className="h-[1px] w-20 sm:w-32 mx-auto bg-gradient-to-r from-transparent via-gold to-transparent mb-4 sm:mb-6 md:mb-8"></div>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-light mb-3 sm:mb-4 md:mb-6 tracking-wide drop-shadow-lg">25 Men. 25 Women. Verified. Approved. Invited.</p>
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-light mb-3 sm:mb-4 md:mb-6 tracking-wide drop-shadow-lg text-center">Only 25 Verified Men and 25 Verified Women Invited to Each Event</p>
           <p className="text-soft-grey mb-8 sm:mb-12 md:mb-16 tracking-[0.2em] sm:tracking-[0.3em] text-xs uppercase font-light text-center max-w-2xl">Entry strictly after screening & approval by our relationship panel</p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
@@ -456,14 +456,7 @@ const App = () => {
               onClick={() => setShowApplicationForm(true)}
               className="shadow-2xl shadow-gold/30 hover:shadow-gold/50 hover:scale-105 w-full sm:w-auto text-xs sm:text-sm px-6 sm:px-8 py-3 sm:py-4"
             >
-              Apply For Invitation
-            </Button>
-            <Button 
-              variant="text" 
-              onClick={() => setActivePage('events')}
-              className="group backdrop-blur-sm w-full sm:w-auto text-xs sm:text-sm"
-            >
-              View Upcoming Events <ArrowRight className="inline-block ml-2 w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-2" />
+              Apply For Upcoming Event
             </Button>
           </div>
         </div>
@@ -473,13 +466,13 @@ const App = () => {
       <section className="bg-gradient-to-r from-black via-[#0a0a0a] to-black py-8 sm:py-12 md:py-16 border-y border-[#D4AF37]/40 shadow-[inset_0_1px_0_0_rgba(212,175,55,0.1),inset_0_-1px_0_0_rgba(212,175,55,0.1)] relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(212,175,55,0.03),transparent_70%)]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center relative z-10">
-          <p className="text-[#D4AF37] text-[10px] sm:text-xs md:text-sm tracking-[0.25em] sm:tracking-[0.3em] md:tracking-[0.35em] font-light uppercase flex flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-6 drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+          <p className="text-[#D4AF37] text-[10px] sm:text-xs md:text-sm tracking-[0.25em] sm:tracking-[0.3em] md:tracking-[0.35em] font-light uppercase flex flex-wrap justify-center items-center gap-2 sm:gap-4 md:gap-6 drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]">
             <span className="hover:drop-shadow-[0_0_20px_rgba(212,175,55,0.6)] transition-all duration-300">Strict Verification</span>
-            <span className="opacity-40 text-[#D4AF37]/60 hidden sm:inline">◆</span>
+            <span className="opacity-40 text-[#D4AF37]/60">◆</span>
             <span className="hover:drop-shadow-[0_0_20px_rgba(212,175,55,0.6)] transition-all duration-300">Balanced Ratio</span>
-            <span className="opacity-40 text-[#D4AF37]/60 hidden sm:inline">◆</span>
+            <span className="opacity-40 text-[#D4AF37]/60">◆</span>
             <span className="hover:drop-shadow-[0_0_20px_rgba(212,175,55,0.6)] transition-all duration-300">Private Venue</span>
-            <span className="opacity-40 text-[#D4AF37]/60 hidden sm:inline">◆</span>
+            <span className="opacity-40 text-[#D4AF37]/60">◆</span>
             <span className="hover:drop-shadow-[0_0_20px_rgba(212,175,55,0.6)] transition-all duration-300">Curated Guests</span>
           </p>
         </div>
@@ -517,7 +510,7 @@ const App = () => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#D4AF37]/5 blur-[120px] rounded-full"></div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif text-white mb-6 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)]">Upcoming Curated Evenings</h2>
+            <h2 className="text-3xl md:text-4xl font-serif text-white mb-6 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)]">Upcoming Matchmaking Events</h2>
             <div className="h-[1px] w-24 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent"></div>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 xl:gap-16 max-w-6xl mx-auto">
@@ -577,27 +570,6 @@ const App = () => {
                         {event.seatsFilled}/{event.totalSeats}
                       </p>
                     </div>
-                    {/* Progress Bar */}
-                    <div className="relative w-full h-2 bg-black/50 rounded-full overflow-hidden border border-[#D4AF37]/20 mb-4">
-                      <div 
-                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#D4AF37] to-[#C9A961] rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(212,175,55,0.5)]"
-                        style={{ width: `${(event.seatsFilled / event.totalSeats) * 100}%` }}
-                      >
-                        {/* Animated shimmer effect */}
-                        <div 
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                          style={{
-                            animation: 'shimmer 2s infinite',
-                            backgroundSize: '200% 100%'
-                          }}
-                        ></div>
-                      </div>
-                      {/* Pulsing indicator at the end */}
-                      <div 
-                        className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-[#D4AF37] rounded-full shadow-[0_0_10px_rgba(212,175,55,0.8)] animate-pulse"
-                        style={{ left: `calc(${(event.seatsFilled / event.totalSeats) * 100}% - 6px)` }}
-                      ></div>
-                    </div>
                     <div className="flex justify-between items-center">
                       <p className="text-[10px] text-gray-500 italic">
                         {event.seatsFilled >= 40 ? '🔥 Filling Fast!' : event.seatsFilled >= 30 ? 'Limited Seats Available' : 'Seats Available'}
@@ -631,9 +603,8 @@ const App = () => {
             <div className="h-[1px] w-32 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent mt-12"></div>
           </div>
           <div className="space-y-6 text-gray-300 font-light text-lg leading-relaxed tracking-wide mt-16">
-            <p className="hover:text-white transition-colors duration-300">Fine dining. Structured introductions.</p>
-            <p className="hover:text-white transition-colors duration-300">Private one-on-one interaction sessions.</p>
-            <p className="text-[#D4AF37] text-xl mt-8 tracking-[0.2em]">No randomness. No swiping. No noise.</p>
+            <p className="hover:text-white transition-colors duration-300">A curated matchmaking evening focused on compatibility in intellect, education, mindset, and stability for individuals serious about marriage.</p>
+            <p className="text-[#D4AF37] text-xl mt-8 tracking-[0.2em]">Not speed dating. No swiping. No randomness.</p>
           </div>
         </div>
       </section>
@@ -686,7 +657,7 @@ const App = () => {
           <div className="h-[1px] w-40 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent mb-16"></div>
           <h2 className="text-3xl md:text-5xl font-serif text-white mb-6 tracking-tight leading-tight">
             Extraordinary Individuals Deserve <br />
-            <GoldText className="drop-shadow-[0_0_20px_rgba(212,175,55,0.2)]">Extraordinary Introductions.</GoldText>
+            <GoldText className="drop-shadow-[0_0_20px_rgba(212,175,55,0.2)]">Extraordinary Matchmaking.</GoldText>
           </h2>
           <div className="h-[1px] w-40 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent mt-16 mb-16"></div>
           <Button 
@@ -837,29 +808,29 @@ const App = () => {
   const Footer = () => (
     <footer className="bg-black border-t border-white/5 py-12 sm:py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-8 sm:gap-12 mb-12 sm:mb-16">
+        <div className="flex flex-col md:flex-row justify-center md:justify-between items-center gap-8 sm:gap-12 mb-12 sm:mb-16 text-center md:text-left">
           <div>
             <h3 className="text-xl sm:text-2xl font-serif text-[#D4AF37] mb-2 tracking-tighter">THE 1% MATCHMAKING</h3>
-            <p className="text-gray-500 text-[10px] sm:text-xs tracking-widest uppercase font-light">Exclusive Offline Matchmaking</p>
+            <p className="text-gray-400 text-[10px] sm:text-xs tracking-widest uppercase font-light max-w-xs mx-auto md:mx-0">The 1% Matchmaking curates exclusive, invitation-only events where exceptional individuals meet to find a truly compatible life partner.</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-12 text-[10px] sm:text-xs tracking-widest uppercase text-gray-400 w-full md:w-auto">
-            <div className="flex flex-col gap-3 sm:gap-4">
-              <button onClick={() => setActivePage('events')} className="hover:text-[#D4AF37] transition-colors text-left">Events</button>
-              <button onClick={() => setActivePage('howItWorks')} className="hover:text-[#D4AF37] transition-colors text-left">How It Works</button>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-12 text-[10px] sm:text-xs tracking-widest uppercase text-gray-400 w-full md:w-auto justify-center md:justify-end">
+            <div className="flex flex-col gap-3 sm:gap-4 text-center md:text-left">
+              <button onClick={() => setActivePage('events')} className="hover:text-[#D4AF37] transition-colors">Events</button>
+              <button onClick={() => setActivePage('howItWorks')} className="hover:text-[#D4AF37] transition-colors">How It Works</button>
             </div>
-            <div className="flex flex-col gap-3 sm:gap-4">
-              <button onClick={() => setActivePage('about')} className="hover:text-[#D4AF37] transition-colors text-left">About</button>
-              <button onClick={() => setShowApplicationForm(true)} className="hover:text-[#D4AF37] transition-colors text-left">Apply</button>
+            <div className="flex flex-col gap-3 sm:gap-4 text-center md:text-left">
+              <button onClick={() => setActivePage('about')} className="hover:text-[#D4AF37] transition-colors">About</button>
+              <button onClick={() => setShowApplicationForm(true)} className="hover:text-[#D4AF37] transition-colors">Apply</button>
             </div>
-            <div className="flex flex-col gap-3 sm:gap-4 col-span-2 sm:col-span-1">
-              <button className="hover:text-[#D4AF37] transition-colors text-left">Privacy Policy</button>
-              <button className="hover:text-[#D4AF37] transition-colors text-left">Terms</button>
+            <div className="flex flex-col gap-3 sm:gap-4 col-span-2 sm:col-span-1 text-center md:text-left">
+              <button className="hover:text-[#D4AF37] transition-colors">Privacy Policy</button>
+              <button className="hover:text-[#D4AF37] transition-colors">Terms</button>
             </div>
           </div>
         </div>
-        <div className="pt-6 sm:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[9px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.3em] uppercase text-gray-600 gap-4">
-          <p className="text-center md:text-left">© 2026 THE 1% MATCHMAKING. ALL RIGHTS RESERVED.</p>
-          <p className="text-center md:text-right">MADE FOR THE EXTRAORDINARY</p>
+        <div className="pt-6 sm:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-center md:justify-between items-center text-[9px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.3em] uppercase text-gray-600 gap-4 text-center">
+          <p>© 2026 THE 1% MATCHMAKING. ALL RIGHTS RESERVED.</p>
+          <p>MADE FOR THE EXTRAORDINARY</p>
         </div>
       </div>
     </footer>
@@ -1090,7 +1061,7 @@ const App = () => {
     <div className="animate-in fade-in duration-700 pt-24 pb-16 bg-black min-h-screen overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16 pt-8">
-          <h1 className="text-4xl md:text-5xl font-serif text-white mb-6 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)]">Upcoming Curated Evenings</h1>
+          <h1 className="text-4xl md:text-5xl font-serif text-white mb-6 tracking-wide drop-shadow-[0_0_30px_rgba(212,175,55,0.2)]">Upcoming Matchmaking Events</h1>
           <div className="h-[1px] w-24 mx-auto bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-8"></div>
           <p className="text-gray-400 text-lg font-light tracking-wide max-w-2xl mx-auto">
             Intimate gatherings designed for meaningful connections among India's most accomplished individuals.
@@ -1180,7 +1151,13 @@ const App = () => {
                       {event.seatsFilled >= 40 ? '🔥 Filling Fast!' : event.seatsFilled >= 30 ? 'Limited Seats Available' : 'Seats Available'}
                     </p>
                   </div>
-                  <Button variant="secondary" className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105">Apply</Button>
+                  <Button 
+                    variant="secondary" 
+                    onClick={() => setShowApplicationForm(true)}
+                    className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105"
+                  >
+                    Apply
+                  </Button>
                 </div>
               </div>
             </div>
