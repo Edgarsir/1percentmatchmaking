@@ -6,6 +6,8 @@ const App = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showApplicationForm, setShowApplicationForm] = useState(false);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [showTermsConditions, setShowTermsConditions] = useState(false);
   
   // Google Apps Script Web App URL
   const googleScriptURL = "https://script.google.com/macros/s/AKfycbweSB2D93Ml09iYNKmYNsTNN4IGDd_ZRZ3At51H0Q9uLoupjoSdmIUoJMzekA02jz--/exec";
@@ -49,7 +51,9 @@ const App = () => {
       contactNumber: '',
       email: '',
       maritalStatus: '',
-      eventInterest: ''
+      eventInterest: '',
+      agreeToTerms: false,
+      agreeToPrivacy: false
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
@@ -67,7 +71,7 @@ const App = () => {
       } else if (step === 2) {
         return formData.education && formData.profession && formData.city;
       } else if (step === 3) {
-        return formData.contactNumber && formData.email && formData.eventInterest;
+        return formData.contactNumber && formData.email && formData.eventInterest && formData.agreeToTerms && formData.agreeToPrivacy;
       }
       return false;
     };
@@ -119,7 +123,9 @@ const App = () => {
             contactNumber: '',
             email: '',
             maritalStatus: '',
-            eventInterest: ''
+            eventInterest: '',
+            agreeToTerms: false,
+            agreeToPrivacy: false
           });
           setCurrentStep(1);
           setShowApplicationForm(false);
@@ -324,6 +330,36 @@ const App = () => {
                       <option value="Any Upcoming Event">Any Upcoming Event</option>
                     </select>
                   </div>
+
+                  {/* Consent Checkboxes */}
+                  <div className="space-y-2 pt-2">
+                    <div className="flex items-start gap-2">
+                      <input
+                        type="checkbox"
+                        name="agreeToTerms"
+                        checked={formData.agreeToTerms}
+                        onChange={handleChange}
+                        required
+                        className="mt-0.5 w-3 h-3 text-gold bg-deep-black border border-gold/20 rounded focus:ring-gold focus:ring-1"
+                      />
+                      <label className="text-[9px] text-soft-grey leading-tight">
+                        I agree to the <button type="button" onClick={() => setShowTermsConditions(true)} className="text-gold hover:text-gold-hover underline">Terms & Conditions</button> *
+                      </label>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <input
+                        type="checkbox"
+                        name="agreeToPrivacy"
+                        checked={formData.agreeToPrivacy}
+                        onChange={handleChange}
+                        required
+                        className="mt-0.5 w-3 h-3 text-gold bg-deep-black border border-gold/20 rounded focus:ring-gold focus:ring-1"
+                      />
+                      <label className="text-[9px] text-soft-grey leading-tight">
+                        I agree to the <button type="button" onClick={() => setShowPrivacyPolicy(true)} className="text-gold hover:text-gold-hover underline">Privacy Policy</button> *
+                      </label>
+                    </div>
+                  </div>
                 </>
               )}
 
@@ -363,6 +399,108 @@ const App = () => {
                 Our team will contact you within 24-48 hours.
               </p>
             </form>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const PrivacyPolicyModal = () => {
+    if (!showPrivacyPolicy) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="bg-gradient-to-br from-matte-black to-deep-black border border-gold/30 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+          <button
+            onClick={() => setShowPrivacyPolicy(false)}
+            className="absolute top-4 right-4 text-gold hover:text-gold-hover transition-colors z-10"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          
+          <div className="p-8">
+            <h2 className="text-3xl font-serif text-gold mb-6">Privacy Policy</h2>
+            <div className="text-soft-grey text-sm space-y-4 leading-relaxed">
+              <p className="text-xs text-gold">Last Updated: 12-03-2026</p>
+              
+              <div>
+                <h3 className="text-white font-medium mb-2">1. Information We Collect</h3>
+                <p>We collect personal information including your name, age, contact details, education, profession, and partner preferences to provide personalized matchmaking services.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-white font-medium mb-2">2. How We Use Your Information</h3>
+                <p>Your information is used for creating your matchmaking profile, understanding preferences, curating compatible matches, and organizing exclusive events.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-white font-medium mb-2">3. Data Confidentiality</h3>
+                <p>We treat your data with strict confidentiality. Only authorized team members can access your information, and we never sell or rent your personal data to third parties.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-white font-medium mb-2">4. Your Privacy Rights</h3>
+                <p>You have the right to request access to your stored information, update your profile, request deletion, or withdraw consent for certain data usage.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-white font-medium mb-2">5. Contact Us</h3>
+                <p>For privacy-related questions, contact us at theonepercentmatchmaking@gmail.com or call 8552932723.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const TermsConditionsModal = () => {
+    if (!showTermsConditions) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="bg-gradient-to-br from-matte-black to-deep-black border border-gold/30 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+          <button
+            onClick={() => setShowTermsConditions(false)}
+            className="absolute top-4 right-4 text-gold hover:text-gold-hover transition-colors z-10"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          
+          <div className="p-8">
+            <h2 className="text-3xl font-serif text-gold mb-6">Terms & Conditions</h2>
+            <div className="text-soft-grey text-sm space-y-4 leading-relaxed">
+              <p className="text-xs text-gold">Last Updated: 12-03-2026</p>
+              
+              <div>
+                <h3 className="text-white font-medium mb-2">1. Eligibility</h3>
+                <p>Participation is limited to individuals 18+ years old who are legally eligible to marry and provide accurate information during the application process.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-white font-medium mb-2">2. Application Process</h3>
+                <p>All guests must submit an application and undergo verification. Submission does not guarantee acceptance to an event.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-white font-medium mb-2">3. Guest Conduct</h3>
+                <p>All guests must maintain respectful behavior and not harass other attendees, misrepresent information, or breach confidentiality.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-white font-medium mb-2">4. No Guarantee</h3>
+                <p>We provide curated social introductions only. We do not guarantee romantic compatibility, relationships, or marriage.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-white font-medium mb-2">5. Contact Information</h3>
+                <p>For questions regarding these terms, contact us at theonepercentmatchmaking@gmail.com.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -622,27 +760,17 @@ const App = () => {
                       <span className="tracking-wide">{event.category}</span>
                     </div>
                   </div>
-                  <div className="pt-8 border-t border-[#D4AF37]/20">
-                    <div className="flex justify-between items-center mb-3">
-                      <p className="text-xs tracking-[0.2em] text-gray-400 uppercase">
-                        Seats Remaining: <span className="text-[#D4AF37] font-medium drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]">{event.seats}</span>
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {event.seatsFilled}/{event.totalSeats}
-                      </p>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <p className="text-[10px] text-gray-500 italic">
-                        {event.seatsFilled >= 40 ? '🔥 Filling Fast!' : event.seatsFilled >= 30 ? 'Limited Seats Available' : 'Seats Available'}
-                      </p>
-                      <Button 
-                        variant="secondary" 
-                        onClick={() => setShowApplicationForm(true)}
-                        className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105"
-                      >
-                        Apply
-                      </Button>
-                    </div>
+                  <div className="pt-8 border-t border-[#D4AF37]/20 text-center">
+                    <p className="text-[10px] text-gray-500 italic mb-4">
+                      {event.seatsFilled >= 40 ? '🔥 Filling Fast!' : event.seatsFilled >= 30 ? 'Limited Seats Available' : 'Seats Available'}
+                    </p>
+                    <Button 
+                      variant="secondary" 
+                      onClick={() => setShowApplicationForm(true)}
+                      className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105"
+                    >
+                      Apply For Invitation
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -884,8 +1012,8 @@ const App = () => {
               <button onClick={() => setShowApplicationForm(true)} className="hover:text-[#D4AF37] transition-colors">Apply</button>
             </div>
             <div className="flex flex-col gap-3 sm:gap-4 col-span-2 sm:col-span-1 text-center md:text-left">
-              <button className="hover:text-[#D4AF37] transition-colors">Privacy Policy</button>
-              <button className="hover:text-[#D4AF37] transition-colors">Terms</button>
+              <button onClick={() => setShowPrivacyPolicy(true)} className="hover:text-[#D4AF37] transition-colors">Privacy Policy</button>
+              <button onClick={() => setShowTermsConditions(true)} className="hover:text-[#D4AF37] transition-colors">Terms</button>
             </div>
           </div>
         </div>
@@ -1178,47 +1306,18 @@ const App = () => {
                   </div>
                 </div>
                 <div className="flex justify-between items-center pt-8 border-t border-[#D4AF37]/20">
-                  <div className="flex-1 mr-4">
-                    <div className="flex justify-between items-center mb-3">
-                      <p className="text-xs tracking-[0.2em] text-gray-400 uppercase">
-                        Seats Remaining: <span className="text-[#D4AF37] font-medium drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]">{event.seats}</span>
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {event.seatsFilled}/{event.totalSeats}
-                      </p>
-                    </div>
-                    {/* Progress Bar */}
-                    <div className="relative w-full h-2 bg-black/50 rounded-full overflow-hidden border border-[#D4AF37]/20 mb-3">
-                      <div 
-                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#D4AF37] to-[#C9A961] rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(212,175,55,0.5)]"
-                        style={{ width: `${(event.seatsFilled / event.totalSeats) * 100}%` }}
-                      >
-                        {/* Animated shimmer effect */}
-                        <div 
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                          style={{
-                            animation: 'shimmer 2s infinite',
-                            backgroundSize: '200% 100%'
-                          }}
-                        ></div>
-                      </div>
-                      {/* Pulsing indicator at the end */}
-                      <div 
-                        className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-[#D4AF37] rounded-full shadow-[0_0_10px_rgba(212,175,55,0.8)] animate-pulse"
-                        style={{ left: `calc(${(event.seatsFilled / event.totalSeats) * 100}% - 6px)` }}
-                      ></div>
-                    </div>
-                    <p className="text-[10px] text-gray-500 italic">
+                  <div className="flex-1 text-center">
+                    <p className="text-[10px] text-gray-500 italic mb-4">
                       {event.seatsFilled >= 40 ? '🔥 Filling Fast!' : event.seatsFilled >= 30 ? 'Limited Seats Available' : 'Seats Available'}
                     </p>
+                    <Button 
+                      variant="secondary" 
+                      onClick={() => setShowApplicationForm(true)}
+                      className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105"
+                    >
+                      Apply For Invitation
+                    </Button>
                   </div>
-                  <Button 
-                    variant="secondary" 
-                    onClick={() => setShowApplicationForm(true)}
-                    className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105"
-                  >
-                    Apply
-                  </Button>
                 </div>
               </div>
             </div>
@@ -1232,6 +1331,8 @@ const App = () => {
     <div className="min-h-screen bg-black text-white selection:bg-[#D4AF37] selection:text-black font-sans overflow-x-hidden">
       <Navbar />
       <ApplicationForm />
+      <PrivacyPolicyModal />
+      <TermsConditionsModal />
       {activePage === 'home' ? <Home /> : activePage === 'events' ? <Events /> : activePage === 'howItWorks' ? <HowItWorks /> : <About />}
       <Footer />
     </div>
