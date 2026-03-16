@@ -512,22 +512,19 @@ const App = () => {
       {/* Luxury top accent line */}
       <div className={`h-[1px] w-full bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent transition-opacity duration-700 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}></div>
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 sm:py-2 lg:py-2 flex justify-between items-center relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 navbar-container">
         {/* Subtle glow effect behind navbar */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.05),transparent_70%)] pointer-events-none"></div>
         
         <div 
-          className="flex items-center cursor-pointer hover:scale-105 transition-all duration-500 relative z-10 group"
+          className="logo-container cursor-pointer group"
           onClick={() => setActivePage('home')}
         >
-          <div className="relative">
-            <img 
-              src="/logo.png" 
-              alt="The 1% Matchmaking" 
-              className="h-28 sm:h-32 md:h-36 lg:h-40 w-auto drop-shadow-[0_0_20px_rgba(212,175,55,0.4)] group-hover:drop-shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-500 z-30"
-              style={{ marginTop: '-20px', marginBottom: '-20px' }}
-            />
-          </div>
+          <img 
+            src="/logo.png" 
+            alt="The 1% Matchmaking" 
+            className="logo-image h-52 sm:h-40 md:h-44 lg:h-48 w-auto"
+          />
           <div className="h-[1px] w-0 group-hover:w-full bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent transition-all duration-500 mt-1 absolute -bottom-2 left-0"></div>
         </div>
         

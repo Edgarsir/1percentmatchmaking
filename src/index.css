@@ -11,3 +11,36 @@
     @apply overflow-x-hidden;
   }
 }
+
+@layer components {
+  /* Custom Navbar Container - Fixed Height */
+  .navbar-container {
+    height: 60px; /* Fixed height regardless of content */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  
+  /* Custom Logo Container - Allows overflow */
+  .logo-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 60px; /* Same as navbar for alignment */
+    overflow: visible; /* Allow logo to extend beyond */
+  }
+  
+  /* Custom Logo Image - Can be any size */
+  .logo-image {
+    position: relative;
+    z-index: 30;
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
+  }
+  
+  .logo-image:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.6));
+  }
+}
