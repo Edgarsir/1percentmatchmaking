@@ -512,18 +512,23 @@ const App = () => {
       {/* Luxury top accent line */}
       <div className={`h-[1px] w-full bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent transition-opacity duration-700 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}></div>
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-7 flex justify-between items-center relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 sm:py-2 lg:py-2 flex justify-between items-center relative">
         {/* Subtle glow effect behind navbar */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.05),transparent_70%)] pointer-events-none"></div>
         
         <div 
-          className="text-sm sm:text-base md:text-lg lg:text-xl font-serif tracking-tighter cursor-pointer hover:scale-105 transition-all duration-500 relative z-10 group"
+          className="flex items-center cursor-pointer hover:scale-105 transition-all duration-500 relative z-10 group"
           onClick={() => setActivePage('home')}
         >
-          <GoldText className="drop-shadow-[0_0_20px_rgba(212,175,55,0.4)] group-hover:drop-shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-500">
-            THE 1% MATCHMAKING
-          </GoldText>
-          <div className="h-[1px] w-0 group-hover:w-full bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent transition-all duration-500 mt-1"></div>
+          <div className="relative">
+            <img 
+              src="/logo.png" 
+              alt="The 1% Matchmaking" 
+              className="h-28 sm:h-32 md:h-36 lg:h-40 w-auto drop-shadow-[0_0_20px_rgba(212,175,55,0.4)] group-hover:drop-shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-500 z-30"
+              style={{ marginTop: '-20px', marginBottom: '-20px' }}
+            />
+          </div>
+          <div className="h-[1px] w-0 group-hover:w-full bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent transition-all duration-500 mt-1 absolute -bottom-2 left-0"></div>
         </div>
         
         {/* Mobile Menu Button */}
@@ -617,7 +622,7 @@ const App = () => {
   const Home = () => (
     <div className="animate-in fade-in duration-700 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-screen w-full flex items-center justify-center bg-matte-black overflow-hidden pt-20 md:pt-0">
+      <section className="relative min-h-screen w-full flex items-center justify-center bg-matte-black overflow-hidden pt-40 md:pt-32">
         {/* Spotlight Image Overlay - Even Larger Size, Centered */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[95%] h-[100%]">
           <img 
@@ -637,7 +642,7 @@ const App = () => {
         <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
         
         <div className="relative z-10 w-full flex flex-col items-center justify-center px-4 sm:px-6">
-          <div className="mb-4 sm:mb-6 md:mb-8">
+          <div className="mb-12 sm:mb-16 md:mb-20">
             <p className="text-gold tracking-[0.4em] sm:tracking-[0.5em] text-[10px] sm:text-xs animate-pulse drop-shadow-[0_0_10px_rgba(212,175,55,0.5)] border border-gold/30 px-4 sm:px-6 py-2 rounded-full backdrop-blur-sm bg-gold/5 inline-block">
               BY INVITATION ONLY
             </p>
