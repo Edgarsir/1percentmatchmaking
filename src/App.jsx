@@ -325,8 +325,8 @@ const App = () => {
                       className="w-full bg-deep-black border border-gold/20 rounded px-2 py-1.5 text-xs text-white focus:border-gold focus:outline-none transition-colors"
                     >
                       <option value="">Select Event</option>
-                      <option value="Elite Doctors Evening - Mumbai">Elite Doctors Evening - Mumbai</option>
-                      <option value="Founders & Visionaries - Bangalore">Founders & Visionaries - Bangalore</option>
+                      <option value="MBBS Doctors Mixer - Nagpur">MBBS Doctors Mixer - Nagpur</option>
+                      <option value="Divorcee Doctors Mixer - Nagpur">Divorcee Doctors Mixer - Nagpur</option>
                       <option value="Any Upcoming Event">Any Upcoming Event</option>
                     </select>
                   </div>
@@ -717,21 +717,25 @@ const App = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 xl:gap-16 max-w-6xl mx-auto">
             {[
               {
-                title: "Elite Doctors Evening",
-                location: "Mumbai",
-                date: "March 15, 2026",
-                venue: "5-Star Private Lounge",
+                title: "MBBS DOCTORS MIXER",
+                location: "Nagpur | By Invitation Only",
+                date: "15 May 2026",
+                venue: "Venue disclosed to approved guests",
                 category: "MBBS / Specialists Only",
+                price: "₹9,995",
+                priceNote: "(Pay after approval)",
                 seats: "12 / 50",
                 seatsFilled: 38,
                 totalSeats: 50
               },
               {
-                title: "Founders & Visionaries",
-                location: "Bangalore",
-                date: "April 02, 2026",
-                venue: "Private Members Club",
-                category: "Tech Founders / Series A+",
+                title: "DIVORCEE DOCTORS MIXER",
+                location: "Nagpur | By Invitation Only",
+                date: "Date to be announced",
+                venue: "Venue disclosed to approved guests",
+                category: "MBBS, BDS & BAMS Only",
+                price: "₹18,999",
+                priceNote: "(Pay after approval)",
                 seats: "08 / 50",
                 seatsFilled: 42,
                 totalSeats: 50
@@ -762,14 +766,18 @@ const App = () => {
                       <span className="tracking-wide">{event.category}</span>
                     </div>
                   </div>
-                  <div className="pt-8 border-t border-[#D4AF37]/20 text-center">
-                    <p className="text-[10px] text-gray-500 italic mb-4">
+                  <div className="pt-8 border-t border-[#D4AF37]/20">
+                    <div className="text-center mb-6">
+                      <p className="text-2xl font-serif text-[#D4AF37] mb-1">{event.price}</p>
+                      <p className="text-xs text-gray-400">{event.priceNote}</p>
+                    </div>
+                    <p className="text-[10px] text-gray-500 italic mb-4 text-center">
                       {event.seatsFilled >= 40 ? '🔥 Filling Fast!' : event.seatsFilled >= 30 ? 'Limited Seats Available' : 'Seats Available'}
                     </p>
                     <Button 
                       variant="secondary" 
                       onClick={() => setShowApplicationForm(true)}
-                      className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105"
+                      className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105 w-full"
                     >
                       Apply For Invitation
                     </Button>
@@ -1262,21 +1270,25 @@ const App = () => {
         <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {[
             {
-              title: "Elite Doctors Evening",
-              location: "Mumbai",
-              date: "March 15, 2026",
-              venue: "5-Star Private Lounge",
+              title: "MBBS DOCTORS MIXER",
+              location: "Nagpur | By Invitation Only",
+              date: "15 May 2026",
+              venue: "Venue disclosed to approved guests",
               category: "MBBS / Specialists Only",
+              price: "₹9,995",
+              priceNote: "(Pay after approval)",
               seats: "12 / 50",
               seatsFilled: 38,
               totalSeats: 50
             },
             {
-              title: "Founders & Visionaries",
-              location: "Bangalore",
-              date: "April 02, 2026",
-              venue: "Private Members Club",
-              category: "Tech Founders / Series A+",
+              title: "DIVORCEE DOCTORS MIXER",
+              location: "Nagpur | By Invitation Only",
+              date: "Date to be announced",
+              venue: "Venue disclosed to approved guests",
+              category: "MBBS, BDS & BAMS Only",
+              price: "₹18,999",
+              priceNote: "(Pay after approval)",
               seats: "08 / 50",
               seatsFilled: 42,
               totalSeats: 50
@@ -1307,7 +1319,11 @@ const App = () => {
                     <span className="tracking-wide">{event.category}</span>
                   </div>
                 </div>
-                <div className="flex justify-between items-center pt-8 border-t border-[#D4AF37]/20">
+                <div className="pt-8 border-t border-[#D4AF37]/20">
+                  <div className="text-center mb-6">
+                    <p className="text-2xl font-serif text-[#D4AF37] mb-1">{event.price}</p>
+                    <p className="text-xs text-gray-400">{event.priceNote}</p>
+                  </div>
                   <div className="flex-1 text-center">
                     <p className="text-[10px] text-gray-500 italic mb-4">
                       {event.seatsFilled >= 40 ? '🔥 Filling Fast!' : event.seatsFilled >= 30 ? 'Limited Seats Available' : 'Seats Available'}
@@ -1315,7 +1331,7 @@ const App = () => {
                     <Button 
                       variant="secondary" 
                       onClick={() => setShowApplicationForm(true)}
-                      className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105"
+                      className="px-8 py-3 text-xs shadow-lg shadow-[#D4AF37]/20 hover:shadow-xl hover:shadow-[#D4AF37]/40 hover:scale-105 w-full"
                     >
                       Apply For Invitation
                     </Button>

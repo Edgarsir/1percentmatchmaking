@@ -345,7 +345,7 @@ function testDoPost() {
         city: 'Mumbai',
         contactNumber: '9876543210',
         maritalStatus: 'Single',
-        eventInterest: 'Elite Doctors Evening - Mumbai'
+        eventInterest: 'MBBS Doctors Mixer - Nagpur'
       })
     }
   };
@@ -359,7 +359,7 @@ function testEmail() {
   const testData = {
     name: 'Test User',
     email: 'your-email@example.com', // Replace with your email to test
-    eventInterest: 'Elite Doctors Evening - Mumbai'
+    eventInterest: 'MBBS Doctors Mixer - Nagpur'
   };
   
   sendConfirmationEmail(testData);
